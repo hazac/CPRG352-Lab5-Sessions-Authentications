@@ -1,8 +1,3 @@
-<%-- 
-    Document   : login
-    Created on : Oct 7, 2021, 4:12:06 PM
-    Author     : hazco
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -16,15 +11,18 @@
         <form method="POST" action="login">
             <div>                
                 <label>Username:</label>
-                <input type="text" name="user">
+                <input type="text" name="user" value="${user}">
             </div>
             <div>                
                 <label>Password:</label>
-                <input type="password" name="password">
+                <input type="password" name="password" value="${password}">
             </div>
             <div>                
                 <input type="submit" value="Log in">
             </div>
         </form>
+        <div>
+            <span>${message}</span>
+        </div>
     </body>
 </html>

@@ -1,8 +1,3 @@
-<%-- 
-    Document   : home
-    Created on : Oct 7, 2021, 4:15:15 PM
-    Author     : hazco
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

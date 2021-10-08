@@ -6,6 +6,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.User;
+import services.AccountService;
 
 /**
  *
@@ -26,12 +29,34 @@ public class LoginServlet extends HttpServlet {
         
         String user_name = request.getParameter("user");
         String passwrd = request.getParameter("password");
+        AccountService account = new AccountService();
         
         //validation
         if(user_name == null || user_name.equals("") || passwrd == null || passwrd.equals("")){
-                request.setAttribute("message", "Please fill username and password.");
+            request.setAttribute("user", user_name);
+            request.setAttribute("password", passwrd);
+            request.setAttribute("message", "Login credentials are not valid.");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+            }
+        else{
+            User user = account.login(user_name, passwrd);
+            if (user == null){
+                request.setAttribute("user", user_name);
+                request.setAttribute("password", passwrd);
+                request.setAttribute("message", "Login credentials are not valid.");
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                 return;
             }
+            else{
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user.getUsername());
+                response.sendRedirect("home");
+                return;
+            }
+            
+                        
+        }
         
     }
 
