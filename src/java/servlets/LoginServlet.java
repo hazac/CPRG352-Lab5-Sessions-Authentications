@@ -19,19 +19,29 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*String action = request.getParameter();*/
-        getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        if(request.getParameter("logout") == null){
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+        }
+        else{
+            //Log out = invalidate session, set message to successful logout
+            HttpSession session = request.getSession();
+            session.invalidate();
+            request.setAttribute("message", "Successfully logged out.");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        //get parameters from login form
         String user_name = request.getParameter("user");
         String passwrd = request.getParameter("password");
         AccountService account = new AccountService();
         
-        //validation
+        //validation user and password are not empty
         if(user_name == null || user_name.equals("") || passwrd == null || passwrd.equals("")){
             request.setAttribute("user", user_name);
             request.setAttribute("password", passwrd);
@@ -40,6 +50,7 @@ public class LoginServlet extends HttpServlet {
             return;
             }
         else{
+            //authentication using AccountServices's login()
             User user = account.login(user_name, passwrd);
             if (user == null){
                 request.setAttribute("user", user_name);
@@ -49,15 +60,13 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
             else{
+                //user object successfully created, create session and redirect to home
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user.getUsername());
                 response.sendRedirect("home");
                 return;
-            }
-            
-                        
-        }
-        
+            }                    
+        }        
     }
 
 }
