@@ -17,12 +17,12 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session =  request.getSession();
         
-        if(session.getAttribute("user") == null){
-            response.sendRedirect("login");        
+        if(session.getAttribute("user") != null){
+            request.setAttribute("message", "Hello " + session.getAttribute("user") + ".");
+            getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);        
         }
         else{
-            request.setAttribute("message", "Hello " + session.getAttribute("user") + ".");
-            getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+            response.sendRedirect("login");
         }
     }
 
