@@ -55,7 +55,6 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("user", user_name);
             request.setAttribute("password", passwrd);
             request.setAttribute("invalidUser", true);
-            //request.setAttribute("message", "Login credentials are not valid.");
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             return;
             }
