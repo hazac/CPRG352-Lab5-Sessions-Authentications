@@ -12,6 +12,7 @@
             <p>${message}</p>
         </div>
         <div>
+            
             <a href="login?logout">Log out</a>
         </div>
     </body>

@@ -10,30 +10,31 @@ import javax.servlet.http.HttpSession;
 import models.User;
 import services.AccountService;
 
-/**
- *
- * @author hazco
- */
+
 public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //get session
         HttpSession session = request.getSession();
+        //check if logout has not been requested 
         if(request.getParameter("logout") == null){
+            //check if session is valid then redirects the user to home page
             if(session.getAttribute("user") != null){
                 request.setAttribute("message", "Hello " + session.getAttribute("user") + ".");
-                response.sendRedirect("home");           
+                response.sendRedirect("home"); 
+                return;
             }
             else{
+                //if session is not valid send the user to login page
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                return;
             }
-            //getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-            //return;
         }
+        //logout has been requested
         else{
-            //Log out = invalidate session, set message to successful logout
-            //HttpSession session = request.getSession();
+            //Log out = invalidate session, set message to successful logout and send user to login page
             session.invalidate();
             request.setAttribute("message", "You have successfully logged out.");
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
@@ -53,7 +54,8 @@ public class LoginServlet extends HttpServlet {
         if(user_name == null || user_name.equals("") || passwrd == null || passwrd.equals("")){
             request.setAttribute("user", user_name);
             request.setAttribute("password", passwrd);
-            request.setAttribute("message", "Login credentials are not valid.");
+            request.setAttribute("invalidUser", true);
+            //request.setAttribute("message", "Login credentials are not valid.");
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             return;
             }
@@ -63,7 +65,7 @@ public class LoginServlet extends HttpServlet {
             if (user == null){
                 request.setAttribute("user", user_name);
                 request.setAttribute("password", passwrd);
-                request.setAttribute("message", "Login credentials are not valid.");
+                request.setAttribute("invalidUser", true);
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                 return;
             }

@@ -1,5 +1,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,7 +23,9 @@
             </div>
         </form>
         <div>
-            <span>${message}</span>
+            <c:if test="${invalidUser}">
+                <span>Login credentials are not valid.</span>
+            </c:if>
         </div>
     </body>
 </html>
